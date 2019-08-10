@@ -1,0 +1,7 @@
+// {
+//   "background": {
+//     "sky" : [0,0,width,height], // range of sky sheet
+//     "tile" :, // range of tile sheet
+//   }
+  
+// }
