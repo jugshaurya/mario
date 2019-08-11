@@ -1,24 +1,46 @@
-var globalImg, tile, sky, singleSky, singleTile, skySheet, tileSheet;
+var globalImg, characterImg, tileImg, skyImg, marioImg
+
+function preload(){
+  globalImg = loadImage('tiles.png')
+  characterImg = loadImage('characters.gif')
+}
 
 function setup() {
-
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(windowWidth-50, windowHeight-50)
   background(0)
 
-  // setup for one image - [x,y,width,height]
-  singleTile = [0, windowHeight - 50, 50, 50]
-  singleSky = [0, 0, 50, 50]
-  // setup for sheet
-  skySheet = [0, 0, windowWidth, windowHeight]
-  tileSheet = [0, windowHeight - 50, windowWidth, 50]
+  // Croping Image
+  tileImg = globalImg.get(0, 0, 16, 16)
+  skyImg = globalImg.get(49, 365, 14, 14)
+  marioImg = characterImg.get(275, 40, 16, 20)
 
-  globalImg = loadImage('tiles.png')
-
-  tile = new ImgSubsection(globalImg, 0, 0, 16, 16)
-  sky = new ImgSubsection(globalImg, 49, 365, 14, 14)
+  // Creating
+  tile = new NonLivingCharacter(tileImg)
+  sky = new NonLivingCharacter(skyImg)
+  mario = new LivingCharacter(marioImg, 50, windowHeight - 200)
 }
 
 function draw() {
-  sky.drawSheet(...singleSky, ...skySheet)
-  tile.drawSheet(...singleTile, ...tileSheet)
+  drawBackgroundLayer(sky, tile)
+  mario.show()
+  
+  if(keyIsDown(RIGHT_ARROW)){
+    mario.move(1)
+  }else if (keyIsDown(LEFT_ARROW)){
+    mario.move(-1)
+  }else if (keyIsDown(UP_ARROW)){
+    mario.jump()
+  }else if (keyIsDown(DOWN_ARROW)){
+    // mario.jump()
+  }
+}
+
+// Helper Functions
+const drawBackgroundLayer = (sky, tile) => {
+
+  skySheet = [0, 0, windowWidth-50, windowHeight-50]
+  tileSheet = [0, windowHeight - 100-50, windowWidth-50, 100]
+
+  sky.drawSheet(...skySheet)
+  tile.drawSheet(...tileSheet)
 }

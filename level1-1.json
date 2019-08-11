@@ -1,7 +1,10 @@
-// {
-//   "background": {
-//     "sky" : [0,0,width,height], // range of sky sheet
-//     "tile" :, // range of tile sheet
-//   }
-  
-// }
+{
+  "background-layer": {
+    "sky_subsection": [49, 365, 14, 14],
+    "tile_Subsection": [0, 0, 16, 16],
+    "single_sky_dim":  [0, 0, 50, 50], 
+    "single_tile_dim": [0, windowHeight - 50, 50, 50] ,
+    "sky_sheet_dim": [0, 0, windowWidth, windowHeight],
+    "tile_sheet_dim": [0, windowHeight - 100, windowWidth, 100],
+  }  
+}
