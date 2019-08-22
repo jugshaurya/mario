@@ -2,6 +2,7 @@
 const path = require('path');
 const HtmlWebPackPlugin =  require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const CopyWebPackPlugin = require('copy-webpack-plugin')
 require('@babel/register');
 // Webpack Configuration
 const config = {
@@ -48,6 +49,9 @@ const config = {
         filename: "[name].css",
         chunkFilename: "[id].css"
       }),
+      new CopyWebPackPlugin([
+        { from: './src/assets', to: 'assets' }
+      ])
   ],
 };
 // Exports

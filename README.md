@@ -35,3 +35,10 @@ add a .babelrc file with code:
 }
 
 add a file named webpack.config.js and see code in that file
+
+add scripts in package.json 
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  }, 
