@@ -50,9 +50,15 @@ const config = {
         chunkFilename: "[id].css"
       }),
       new CopyWebPackPlugin([
-        { from: './src/assets', to: 'assets' }
+        { from: './src/assets', to: 'assets' },
       ])
   ],
+
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+}
 };
 // Exports
 module.exports = config;

@@ -1,13 +1,20 @@
-import Phaser from 'phaser';
-
+// In BootScene we are dealing with assets loading to our Game
 class BootScene extends Phaser.Scene {
 
-    init(){}
-    preload(){}
-    create(){
-        console.log('Scene working')
+    // For any variables initialization 
+    init () {}
+    
+    // For Loading Assets or maybe some Progress Bar
+    preload () {        
+        // Laoading Asset
+        this.load.image('player', 'assets/player.png')
+
+        // Passing Scene to GameScreen with data loaded in preloaded
     }
-    update(){}
+
+    create(){
+        this.scene.start('game-scene')
+    }
 }
 
 export default BootScene;

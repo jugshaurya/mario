@@ -42,3 +42,8 @@ add scripts in package.json
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
   }, 
+
+
+Added copy-webpack-plugin for assets
+
+
