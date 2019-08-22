@@ -4,7 +4,8 @@ class GameScene extends Phaser.Scene {
   }
 
   create () {
-    this.add.image(800, 500, 'player')
+    this.cameras.main.setBackgroundColor('#FFF')
+    this.add.image(800, 500, 'player').setScale(2).setOrigin(0,0)
     console.log('Game-scene Working')
   }
 
