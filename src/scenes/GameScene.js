@@ -1,4 +1,5 @@
 class GameScene extends Phaser.Scene {
+  
   constructor () {
     super('game-scene')
   }
@@ -9,7 +10,9 @@ class GameScene extends Phaser.Scene {
     console.log('Game-scene Working')
   }
 
-  update () {}
+  update () {
+
+  }
 
 }
 
