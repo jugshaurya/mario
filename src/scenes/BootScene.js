@@ -4,9 +4,9 @@ class BootScene extends Phaser.Scene {
   // For Loading Assets or maybe some Progress Bar
   preload() {
     // Loading Mario Asset
-    this.load.spritesheet('mario', './assets/mario-sprites.png', {
+    this.load.spritesheet('mario', './assets/mario_and_enemies/little_mario.png', {
       frameWidth: 16,
-      frameHeight: 32,
+      frameHeight: 16,
     })
 
     // Loading Level-files (tilemap image + json File)

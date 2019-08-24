@@ -32,7 +32,6 @@ class GameScene extends Phaser.Scene {
     
     // 4. Loading Mario + Adding physics-enabled-mario and stoping mario from going out of screen
     this.mario = this.physics.add.sprite(100, 0, 'mario');
-    console.log(this.mario.body.world.bounds)
     this.mario.body.setCollideWorldBounds(true)
 
     // 5. Handling Collision Between groundGroup and mario
@@ -41,7 +40,27 @@ class GameScene extends Phaser.Scene {
     // controller of Mario
     this.keyboardCursor = this.input.keyboard.createCursorKeys();
 
-    // Animating Mario
+    // Creating Small Mario Animation
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('mario', { start: 0, end: 0 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('mario', { start: 1, end: 3}),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'forward-jump',
+      frames: this.anims.generateFrameNumbers('mario', { start: 5, end: 5}),
+      frameRate: 10,
+      repeat: -1
+    });
 
     // make the camera follow the player
     this.cameras.main.startFollow(this.mario);
@@ -49,20 +68,30 @@ class GameScene extends Phaser.Scene {
   
   update() {    
     // controlling Mario
-    // console.log(this.mario.x)
-    if (this.keyboardCursor.left.isDown) {
+    if (this.keyboardCursor.right.isDown && 
+        this.keyboardCursor.up.isDown && 
+        this.mario.body.touching.down)
+    {
+      console.log('jskdf')
+      this.mario.anims.play('forward-jump', true);
+      
+    } else if (this.keyboardCursor.left.isDown) {
       this.mario.setVelocityX(-160);
-      // player.anims.play('left', true);
+      this.mario.flipX = true
+      this.mario.anims.play('right', true);
+
     } else if (this.keyboardCursor.right.isDown) {
       this.mario.setVelocityX(160);
-      // player.anims.play('right', true);
+      this.mario.flipX = false
+      this.mario.anims.play('right', true);
     } else {
+      // console.log('sjkd')
       this.mario.setVelocityX(0);
-      // player.anims.play('turn');
+      this.mario.anims.play('idle', true);
     }
 
     if (this.keyboardCursor.up.isDown && this.mario.body.touching.down) {
-      this.mario.setVelocityY(-160);
+      this.mario.setVelocityY(-100);
     }
   }
 
