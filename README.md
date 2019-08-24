@@ -48,4 +48,26 @@ Added copy-webpack-plugin for assets
 -------------------------------------------
 
 Bootscenes
+GameScene
 
+Made level with tiled app in JSON format with tile-gutter from internet
+
+
+Adding Mario
+------------------------
+
+
+ADDing level
+--------------
+````
+function preload(){
+	this.load.image('gameTiles', 'tiles_spritesheet.png');
+	this.load.tilemapTiledJSON﻿('level1', 'map.json');
+}
+function create(){
+	this.map = this.add.tilemap('level1');
+	var tileset = this.map.addTilesetImage('tiles_spritesheet','gameTiles');
+	this.backgroundLayer = this.map.createLayer('backgroundLayer', tileset);	
+}
+
+```
