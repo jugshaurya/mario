@@ -33,37 +33,32 @@ class GameScene extends Phaser.Scene {
     // 4. Loading Mario + Adding physics-enabled-mario and stoping mario from going out of screen
     this.mario = this.physics.add.sprite(100, 0, 'mario');
     this.mario.body.setCollideWorldBounds(true)
-
+    
     // 5. Handling Collision Between groundGroup and mario
     this.physics.add.collider(this.mario, this.groundGroup);
-
-    // controller of Mario
+    
+    // 6. Controling Mario
     this.keyboardCursor = this.input.keyboard.createCursorKeys();
-
-    // Creating Small Mario Animation
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('mario', { start: 0, end: 0 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('mario', { start: 1, end: 3}),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'forward-jump',
-      frames: this.anims.generateFrameNumbers('mario', { start: 5, end: 5}),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    // make the camera follow the player
+    
+    // 7. Mario- Animation
+    this.animate('mario')
+    
+    // 8. make the camera follow the player
     this.cameras.main.startFollow(this.mario);
+
+    // 9. Adding Mario collision with bricks, coins and pipes
+    // 9.a. selecting group and setting their depth to -1 
+    this.brickGroup = this.addGroup('Bricks'); this.brickGroup.setDepth(-1)
+    this.coinGroup = this.addGroup('Coins'); this.coinGroup.setDepth(-1)
+    this.pipeGroup = this.addGroup('Pipes'); this.pipeGroup.setDepth(-1)
+
+    // 9.b. Adding mario collision
+    this.physics.add.collider(this.mario, this.brickGroup);
+    this.physics.add.collider(this.mario, this.coinGroup);
+    this.physics.add.collider(this.mario, this.pipeGroup);
+
+
+
   }
   
   update() {    
@@ -72,7 +67,6 @@ class GameScene extends Phaser.Scene {
         this.keyboardCursor.up.isDown && 
         this.mario.body.touching.down)
     {
-      console.log('jskdf')
       this.mario.anims.play('forward-jump', true);
       
     } else if (this.keyboardCursor.left.isDown) {
@@ -85,21 +79,22 @@ class GameScene extends Phaser.Scene {
       this.mario.flipX = false
       this.mario.anims.play('right', true);
     } else {
-      // console.log('sjkd')
       this.mario.setVelocityX(0);
       this.mario.anims.play('idle', true);
     }
 
     if (this.keyboardCursor.up.isDown && this.mario.body.touching.down) {
-      this.mario.setVelocityY(-100);
+      this.mario.setVelocityY(-200);
     }
   }
 
   addGroup(layername) {
+    console.log(layername)
     const group = this.physics.add.group({
       allowGravity: false,
       immovable: true
     })
+
     const objects = this.map.getObjectLayer(layername)['objects']
 
     objects.forEach((object, index) => {
@@ -114,6 +109,29 @@ class GameScene extends Phaser.Scene {
     return group
   }
 
+  animate (character) {
+    // Creating Small Mario Animation
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers(character, { start: 0, end: 0 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers(character, { start: 1, end: 3}),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'forward-jump',
+      frames: this.anims.generateFrameNumbers(character, { start: 5, end: 5}),
+      frameRate: 10,
+      repeat: -1
+    });
+  }
 }
 
 export default GameScene;
