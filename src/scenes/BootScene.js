@@ -9,6 +9,16 @@ class BootScene extends Phaser.Scene {
       frameHeight: 16,
     })
 
+    this.load.spritesheet('goomba', './assets/mario_and_enemies/goomba.png', {
+      frameWidth: 16,
+      frameHeight: 16,
+    })
+
+    this.load.spritesheet('turtle', './assets/mario_and_enemies/turtle.png', {
+      frameWidth: 16,
+      frameHeight: 24,
+    })
+
     // Loading Level-files (tilemap image + json File)
     this.load.image('tileset_gutter', './assets/tileset_gutter.png')
     this.load.tilemapTiledJSON('level1', './assets/mariolevel1.json')
