@@ -41,7 +41,27 @@ class GameScene extends Phaser.Scene {
     this.keyboardCursor = this.input.keyboard.createCursorKeys();
     
     // 7. Mario - Animation
-    this.animate('mario')
+    // Creating Small Mario Animation
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('mario', { start: 0, end: 0 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('mario', { start: 1, end: 3}),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'forward-jump',
+      frames: this.anims.generateFrameNumbers('mario', { start: 5, end: 5}),
+      frameRate: 10,
+      repeat: -1
+    });
     
     // 8. make the camera follow the player
     this.cameras.main.startFollow(this.mario);
@@ -67,6 +87,47 @@ class GameScene extends Phaser.Scene {
     
     this.keepEnemyOnGround(this.goombas)
     this.keepEnemyOnGround(this.turtles)
+
+    this.collideEnemeyWithPipes(this.goombas)
+    this.collideEnemeyWithPipes(this.turtles)
+
+    this.goombas.forEach(enemy => {
+      this.physics.add.collider(this.mario, enemy.type)
+    })
+
+
+    this.turtles.forEach(enemy => {
+      this.physics.add.collider(this.mario, enemy.type)
+    })
+
+    // enemies animation
+        // 7. Mario - Animation
+    // Creating Small Mario Animation
+
+    this.anims.create({
+      key: 'moveTurtle',
+      frames: this.anims.generateFrameNumbers('turtle', { start: 0, end: 1}),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'deadTurtle',
+      frames: this.anims.generateFrameNumbers('turtle', { start: 4, end: 5}),
+      frameRate: 10,
+      repeat: -1
+    });
+    
+
+
+    this.anims.create({
+      key: 'moveGoomba',
+      frames: this.anims.generateFrameNumbers('goomba', { start: 0, end: 1}),
+      frameRate: 10,
+      repeat: -1
+    });
+    
+
   }
   
   update() {    
@@ -110,7 +171,7 @@ class GameScene extends Phaser.Scene {
       // character is undefined for bricks , coins , tiles
       group.create(object.x, object.y, object)
       const objectProps = group.children.entries[index]
-      objectProps.displayHeight = object.height
+      objectProps.displayHeight = object.height - 2
       objectProps.displayWidth = object.width
       objectProps.displayOriginX = 0
       objectProps.displayOriginY = 0
@@ -119,29 +180,6 @@ class GameScene extends Phaser.Scene {
     return group
   }
   
-  animate (character) {
-    // Creating Small Mario Animation
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers(character, { start: 0, end: 0 }),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers(character, { start: 1, end: 3}),
-      frameRate: 10,
-      repeat: -1
-    });
-
-    this.anims.create({
-      key: 'forward-jump',
-      frames: this.anims.generateFrameNumbers(character, { start: 5, end: 5}),
-      frameRate: 10,
-      repeat: -1
-    });
-  }
 
   fillEnemyArray (layername, character, enemy_array) {
     const objects = this.map.getObjectLayer(layername)['objects']
@@ -149,7 +187,7 @@ class GameScene extends Phaser.Scene {
       const enemy = this.physics.add.sprite(object.x, object.y, character)
       enemy_array.push({
         type : enemy ,
-        velocity : 1
+        velocity : 1.1,
       })
     });
   }
@@ -157,18 +195,48 @@ class GameScene extends Phaser.Scene {
   keepEnemyOnGround(enemy_array) {
     enemy_array.forEach(enemy => {
       this.physics.add.collider(enemy.type, this.groundGroup)
+      enemy.type.body.setCollideWorldBounds(true)
     })
+
   }
   
   moveEnemies() {
-    this.goombas.forEach((enemy, index) => {          
-      // enemy.type.x += enemy.velocity
+    this.goombas.forEach(enemy => {
+      enemy.type.anims.play('moveGoomba', true)
+      enemy.type.x -= enemy.velocity 
+    })
+
+    this.turtles.forEach(enemy => {
+      enemy.type.anims.play('moveTurtle', true)
+      enemy.type.x -= enemy.velocity 
+    })
+  }
+
+
+  collideEnemeyWithPipes(enemy_array) {
+    enemy_array.forEach(enemy => {
+
       this.physics.add.collider(enemy.type, this.pipeGroup, () => {
-        // enemy.velocity = - enemy.velocity
-        // if (index == 0 && enemy.type == 'goomba' ){
-          console.log(enemy.velocity)
-        // }
-      })
+
+        enemy.velocity = -1 * enemy.velocity
+        if (enemy.type.texture.key == 'turtle' && enemy.velocity > 0 ) {
+          enemy.type.flipX = false
+        }else{
+          enemy.type.flipX = true
+        }
+      }, null , this)
+
+      // COLLISION WITH GROUND LAYER
+      this.physics.add.collider(enemy.type, this.groundGroup, () => {
+        enemy.velocity = -1 * enemy.velocity
+        if (enemy.type.texture.key == 'turtle' && enemy.velocity > 0 ) {
+          enemy.type.flipX = false
+        }else{
+          enemy.type.flipX = true
+        }
+      }, null , this)
+
+
     })
   }
 
