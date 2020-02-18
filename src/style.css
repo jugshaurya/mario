@@ -1,13 +1,11 @@
-html,body{
-    margin: 0;
-    padding: 0;
+#game-canvas {
+  zoom: 260%;
+  margin-left: -35vw;
+  margin-top: -29vh;
 }
 
-body{
-    background: gray;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
-
-/* canvas{
-    width: 100%;
-    display: block;
-} */
